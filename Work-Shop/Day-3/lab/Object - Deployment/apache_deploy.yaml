@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: apache-container
-        image: karthickponcloud/k8slabs:apache_v1
+        image: exelixiquest/k8slabs:apache_v1
         ports:
         - containerPort: 80

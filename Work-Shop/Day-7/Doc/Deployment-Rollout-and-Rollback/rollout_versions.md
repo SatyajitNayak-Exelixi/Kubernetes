@@ -80,8 +80,8 @@ EXPOSE 80
 Run the following commands to build the Docker images:
 
 ```bash
-docker build -t karthickponcloud/k8slabs:apache_v1 -f Dockerfile-v1 .
-docker build -t karthickponcloud/k8slabs:apache_v2 -f Dockerfile-v2 .
+docker build -t exelixiquest/k8slabs:apache_v1 -f Dockerfile-v1 .
+docker build -t exelixiquest/k8slabs:apache_v2 -f Dockerfile-v2 .
 ```
 
 ---
@@ -95,8 +95,8 @@ docker build -t karthickponcloud/k8slabs:apache_v2 -f Dockerfile-v2 .
 
 2. Push the images:
    ```bash
-   docker push karthickponcloud/k8slabs:apache_v1
-   docker push karthickponcloud/k8slabs:apache_v2
+   docker push exelixiquest/k8slabs:apache_v1
+   docker push exelixiquest/k8slabs:apache_v2
    ```
 
 Verify the images are available in the registry.
@@ -127,7 +127,7 @@ spec:
     spec:
       containers:
       - name: apache-container
-        image: karthickponcloud/k8slabs:apache_v1
+        image: exelixiquest/k8slabs:apache_v1
         ports:
         - containerPort: 80
 ```
@@ -181,7 +181,7 @@ spec:
 
 Update the deployment image to **Version 2**:
 ```bash
-kubectl set image deployment/apache-deployment apache-container=karthickponcloud/k8slabs:apache_v2 --record
+kubectl set image deployment/apache-deployment apache-container=exelixiquest/k8slabs:apache_v2 --record
 
 ```
 Annotate the deployment as record option will be deprecated:
