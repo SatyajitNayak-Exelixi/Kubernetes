@@ -33,6 +33,11 @@ To view labels applied to nodes:
 kubectl get nodes --show-labels
 ```
 
+To Remove labels applied to nodes:
+```bash
+kubectl label nodes worker-node-1.example.com app-
+```
+
 ### Applying Labels to Pods & Deployments
 Labels can also be applied to existing Deployments and Pods using the `kubectl label` command.
 
