@@ -31,9 +31,9 @@ This example demonstrates node selectors with two worker nodes, `worker-node-1.e
 
 Assign labels to the nodes to identify them for scheduling.
 
-1. Label `worker-node-1.example.com` with `env=simplilearn`:
+1. Label `worker-node-1.example.com` with `env=staging`:
    ```bash
-   kubectl label nodes worker-node-1.example.com env=simplilearn
+   kubectl label nodes worker-node-1.example.com env=staging
    ```
 
 2. Verify the labels:
@@ -64,7 +64,7 @@ Assign labels to the nodes to identify them for scheduling.
        image: nginx
        imagePullPolicy: IfNotPresent
      nodeSelector:
-       env: simplilearn
+       env: staging
    ```
 
 3. Create the pod:
@@ -77,7 +77,7 @@ Assign labels to the nodes to identify them for scheduling.
    kubectl get pods -o wide
    ```
 
-   - The pod should be scheduled on `worker-node-1.example.com`, as it matches the `env=simplilearn` label.
+   - The pod should be scheduled on `worker-node-1.example.com`, as it matches the `env=staging` label.
 
 ---
 
@@ -106,7 +106,7 @@ Node selectors are basic, but you can use **node affinity** for more advanced sc
              - key: env
                operator: NotIn
                values:
-               - simplilearn
+               - staging
      containers:
      - name: httpd
        image: docker.io/httpd
@@ -122,7 +122,7 @@ Node selectors are basic, but you can use **node affinity** for more advanced sc
    kubectl get pods -o wide
    ```
 
-   - The pod should be scheduled on `worker-node-2.example.com`, as the affinity rule excludes nodes labeled `env=simplilearn`.
+   - The pod should be scheduled on `worker-node-2.example.com`, as the affinity rule excludes nodes labeled `env=staging`.
 
 ---
 
@@ -133,7 +133,7 @@ Node selectors are basic, but you can use **node affinity** for more advanced sc
    kubectl get nodes --show-labels
    ```
 
-   Ensure that the labels (`env=simplilearn`) are applied correctly to `worker-node-1`.
+   Ensure that the labels (`env=staging`) are applied correctly to `worker-node-1`.
 
 2. **Check Pod Scheduling**:
    ```bash
@@ -157,7 +157,7 @@ Node selectors are basic, but you can use **node affinity** for more advanced sc
 
 | **Feature**          | **Description**                                                                 | **Example**                                                                                       |
 |-----------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| **Node Selectors**    | Schedule pods on nodes with specific labels.                                    | `nodeSelector: { env: simplilearn }` ensures the pod runs on nodes labeled with `env=simplilearn`.|
+| **Node Selectors**    | Schedule pods on nodes with specific labels.                                    | `nodeSelector: { env: staging }` ensures the pod runs on nodes labeled with `env=staging`.|
 | **Node Affinity**     | Advanced scheduling to include or exclude nodes using logical operators.        | `NotIn` operator to exclude specific nodes.                                                     |
 | **Pod Scheduling**    | Verify where pods are scheduled to confirm node selectors/affinity is working.  | `kubectl get pods -o wide` shows which node the pod is scheduled on.                             |
 
