@@ -171,6 +171,11 @@ To validate your understanding:
    kubectl describe pod <pod-name>
    ```
 
+5. **Unlable the key from the Nodes**:
+   ```bash
+   kubectl lable node <NodeName> {key}-
+   ```
+
 ---
 
 ## Conclusion
