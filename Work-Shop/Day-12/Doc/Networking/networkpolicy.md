@@ -58,14 +58,14 @@ NetworkPolicies depend on the underlying **CNI plugin** to enforce traffic rules
 ### **Section 1: Allow Ingress Traffic**
 
 #### **1. Create the Main Application Pod**
-Launch the main application pod with the `app=simplilearn` label:
+Launch the main application pod with the `app=exelixi` label:
 ```bash
-kubectl run simplilearn --image=nginx --labels="app=simplilearn" --expose --port=80
+kubectl run exelixi --image=nginx --labels="app=exelixi" --expose --port=80
 ```
 Verify the pod and service:
 ```bash
 kubectl get pods
-kubectl get svc simplilearn
+kubectl get svc exelixi
 ```
 
 #### **2. Create an Allow-Ingress NetworkPolicy**
@@ -74,16 +74,16 @@ Create a YAML file named `allow-ingress.yaml`:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: simplilearn-allow-ingress
+  name: exelixi-allow-ingress
 spec:
   podSelector:
     matchLabels:
-      app: simplilearn
+      app: exelixi
   ingress:
   - from:
       - podSelector:
           matchLabels:
-            app: simplilearn
+            app: exelixi
 ```
 
 Apply the NetworkPolicy:
@@ -99,12 +99,22 @@ kubectl get networkpolicy
 #### **3. Test Allow Ingress**
 Run a testing pod **with matching labels**:
 ```bash
-kubectl run --image=nginx test-$RANDOM --labels="app=simplilearn"
-kubectl exec -it test-<podname> -- curl http://simplilearn
+kubectl run --image=nginx test-$RANDOM --labels="app=exelixi"
+kubectl exec -it test-<podname> -- curl http://exelixi
 ```
 
 Expected Result:
 - Traffic is **allowed**, and the NGINX default page should load.
+
+#### **4. Create A Diff App And Test Ingress**
+Run a testing pod **with different labels**:
+```bash
+kubectl run --image=nginx test-$RANDOM --labels="app=exelixi-quest"
+kubectl exec -it test-<podname> -- curl http://exelixi
+```
+
+Expected Result:
+- Won't Be able to connect with the Exelixi Pod.
 
 ---
 
@@ -116,11 +126,11 @@ Create a YAML file named `deny-all-ingress.yaml`:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: simplilearn-deny-all
+  name: exelixi-deny-all
 spec:
   podSelector:
     matchLabels:
-      app: simplilearn
+      app: exelixi
   ingress: []
 ```
 
@@ -138,7 +148,7 @@ kubectl get networkpolicy
 Run a testing pod to verify blocked traffic:
 ```bash
 kubectl run --rm -i -t --image=alpine test-$RANDOM -- sh
-curl http://simplilearn
+curl http://exelixi
 ```
 
 Expected Result:
@@ -151,14 +161,14 @@ Expected Result:
 1. **Allow Policy**:
    - Test with a matching label:
      ```bash
-     curl http://simplilearn
+     curl http://exelixi
      ```
    - Result: NGINX default page loads, indicating **allowed ingress**.
 
 2. **Deny-All Policy**:
    - Test with any Pod, regardless of labels:
      ```bash
-     curl http://simplilearn
+     curl http://exelixi
      ```
    - Result: Traffic is **blocked**, and the connection times out.
 
@@ -168,18 +178,18 @@ Expected Result:
 
 1. Delete the application pod:
    ```bash
-   kubectl delete pod simplilearn
+   kubectl delete pod exelixi
    ```
 
 2. Delete the service:
    ```bash
-   kubectl delete svc simplilearn
+   kubectl delete svc exelixi
    ```
 
 3. Delete the NetworkPolicies:
    ```bash
-   kubectl delete networkpolicy simplilearn-allow-ingress
-   kubectl delete networkpolicy simplilearn-deny-all
+   kubectl delete networkpolicy exelixi-allow-ingress
+   kubectl delete networkpolicy exelixi-deny-all
    ```
 
 ---
